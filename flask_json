@@ -1,0 +1,42 @@
+https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
+
+$ mkdir tutorial
+$ cd tutorial
+$ touch main.py
+$ python3 -m venv env
+$ source env/bin/activate
+(env) $ pip3 install flask-restful
+
+Next, import the flask module and its flask_restful library into your main.py code:
+
+from flask import Flask, escape, request
+import json
+app = Flask(__name__)
+
+@app.route('/')
+def humans():
+        x = {
+        "name": "toan",
+        "age": "22",
+        "city": "Hanoi"
+        }
+        y = json.dumps(x)
+        return y
+
+$export FLASK_APP=main.py
+$flask run
+
+______________________________________________
+import requests
+from bs4 import BeautifulSoup
+req = requests.get('http://127.0.0.1:5000')
+soup = BeautifulSoup(req.text, "lxml")
+# create array index include index of row
+new_feeds = soup.find("body").text
+print(new_feeds)
+
+__________________________________________________
+
+
+
+
