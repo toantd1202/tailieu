@@ -36,7 +36,11 @@ new_feeds = soup.find("body").text
 print(new_feeds)
 
 __________________________________________________
+@app.route("/user/<username>")
+def ten(username):
+	return "hi! I'm {0}".format(username)
 
+@@app.route("/user/<username>", methods=['POST'...])
 
 
 
