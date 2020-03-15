@@ -1,0 +1,59 @@
+1. Xây dựng 1 webservice cung cấp các REST API sau:
+- API list ra các JSON objects load ra từ các file có trong folder data (GET)
+- API tạo và save JSON object vào folder data (POST)
+- API sửa JSON object theo tham số (PUT) 
+- API xóa 1 hoặc nhiều JSON object (DELETE)
+- Sử dụng PEP8, virtualenv
+- 2 đứa cùng sử dụng git, có branching, áp dụng các kiến thức đã nghiên cứu được (commit, checkout, merge...), chú ý câu cú khi commit
+
+
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+req = requests.get('https://gadgets.dantri.com.vn/corona')
+soup = BeautifulSoup(req.text, "lxml")
+# create array index include index of row
+new_feeds = soup.findAll('tr', class_='ant-table-row ant-table-row-level-0')
+index= [ a.get('data-row-key') for a in new_feeds]
+
+# get content of row
+country,SCN,TV, BP =[],[],[],[]
+for i in index:
+    tmp=soup.find('tr', attrs={'data-row-key': i}).td
+    country.append(tmp.text.strip())                                                                       #get name country
+    SCN.append(tmp.next_sibling.text.strip().replace(" ","").replace("\n","^"))                            #get so ca nhiem
+    TV.append(tmp.next_sibling.next_sibling.text.strip().replace(" ","").replace("\n","^"))                #get so nguoi tu vong
+    BP.append(tmp.next_sibling.next_sibling.next_sibling.text.strip().replace(" ","").replace("\n","^"))   #get so ngoi binh phuc
+# convert to excel
+df = pd.DataFrame()
+df['Country'], df['Số ca nhiễm'], df['Số người tử vong'], df['Số người bình phục'] = country, SCN, TV, BP
+
+print(df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+df.to_excel('genis.xlsx',index=False)
+
